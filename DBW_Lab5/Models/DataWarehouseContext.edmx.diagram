@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9e077cb0a86e40e6923e31566dac5384" Name="Diagram1">
+        <EntityTypeShape EntityType="DataWarehouseModel.Customer" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Fact" Width="1.5" PointX="5.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Headquarter" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Item" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.MailOrderCustomer" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderItem" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Order" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Store" Width="1.5" PointX="3" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.StoreItem" Width="1.5" PointX="8.25" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.sysdiagram" Width="1.5" PointX="5.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Time" Width="1.5" PointX="3" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.WalkInCustomer" Width="1.5" PointX="3" PointY="15.25" IsExpanded="true" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Fact_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_MailOrderCustomer_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Orders_Customer1" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_WalkInCustomer_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Fact_Headquarter" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Fact_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Fact_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Fact_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Fact_Times" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Store_Headquarter" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderItem_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_StoreItem_Item" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderItem_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_StoreItem_Store" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

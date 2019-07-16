@@ -1,0 +1,929 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DataWarehouseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+          </Key>
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" />
+          <Property Name="city_id" Type="int" />
+          <Property Name="first_order_date" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="Fact">
+          <Key>
+            <PropertyRef Name="time_id" />
+            <PropertyRef Name="city_id" />
+            <PropertyRef Name="store_id" />
+            <PropertyRef Name="customer_id" />
+            <PropertyRef Name="order_id" />
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="time_id" Type="int" Nullable="false" />
+          <Property Name="city_id" Type="int" Nullable="false" />
+          <Property Name="store_id" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="order_id" Type="int" Nullable="false" />
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="dollar_sold" Type="float" />
+          <Property Name="avg_sales" Type="float" />
+          <Property Name="stock_quantity" Type="int" />
+          <Property Name="item_sold_quantity" Type="int" />
+          <Property Name="num_orders" Type="int" />
+        </EntityType>
+        <EntityType Name="Headquarter">
+          <Key>
+            <PropertyRef Name="city_id" />
+          </Key>
+          <Property Name="city_id" Type="int" Nullable="false" />
+          <Property Name="city_name" Type="varchar" MaxLength="255" />
+          <Property Name="headquarter_address" Type="varchar" MaxLength="255" />
+          <Property Name="state" Type="varchar" MaxLength="255" />
+          <Property Name="time_start" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
+          <Property Name="size" Type="varchar" MaxLength="255" />
+          <Property Name="weight" Type="float" />
+          <Property Name="unit_price" Type="float" />
+          <Property Name="time_import" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="MailOrderCustomer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+            <PropertyRef Name="time_order" />
+          </Key>
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="post_address" Type="varchar" MaxLength="255" />
+          <Property Name="time_order" Type="datetime2" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="int" Nullable="false" />
+          <Property Name="item_id" Type="int" />
+          <Property Name="sale_unit_price" Type="float" />
+          <Property Name="quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="date_order" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="store_id" Type="int" Nullable="false" />
+          <Property Name="city_id" Type="int" />
+          <Property Name="phone" Type="varchar" MaxLength="255" />
+          <Property Name="time_start" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="StoreItem">
+          <Key>
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="store_id" Type="int" Nullable="false" />
+          <Property Name="item_id" Type="int" />
+          <Property Name="quantity_held" Type="int" />
+          <Property Name="time_last_sale" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Times">
+          <Key>
+            <PropertyRef Name="time_id" />
+          </Key>
+          <Property Name="time_id" Type="int" Nullable="false" />
+          <Property Name="year" Type="int" />
+          <Property Name="quarter" Type="int" />
+          <Property Name="month" Type="int" />
+          <Property Name="week" Type="int" />
+          <Property Name="day_of_the_week" Type="int" />
+          <Property Name="date" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="WalkInCustomer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+            <PropertyRef Name="time_visit" />
+          </Key>
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="tourism_guide" Type="varchar" MaxLength="255" />
+          <Property Name="time_visit" Type="datetime2" Precision="0" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Fact_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Headquarter">
+          <End Role="Headquarter" Type="Self.Headquarter" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Headquarter">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Times">
+          <End Role="Times" Type="Self.Times" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Times">
+              <PropertyRef Name="time_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="time_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MailOrderCustomer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="MailOrderCustomer" Type="Self.MailOrderCustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="MailOrderCustomer">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItem_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItem_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Customer1">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Store_Headquarter">
+          <End Role="Headquarter" Type="Self.Headquarter" Multiplicity="0..1" />
+          <End Role="Store" Type="Self.Store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Headquarter">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="Store">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreItem_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="StoreItem" Type="Self.StoreItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="StoreItem">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreItem_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="StoreItem" Type="Self.StoreItem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="StoreItem">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalkInCustomer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="WalkInCustomer" Type="Self.WalkInCustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="WalkInCustomer">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DataWarehouseModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fact" EntityType="Self.Fact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Headquarter" EntityType="Self.Headquarter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MailOrderCustomer" EntityType="Self.MailOrderCustomer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItem" EntityType="Self.OrderItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreItem" EntityType="Self.StoreItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Times" EntityType="Self.Times" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WalkInCustomer" EntityType="Self.WalkInCustomer" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Fact_Customer" Association="Self.FK_Fact_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Fact" EntitySet="Fact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Headquarter" Association="Self.FK_Fact_Headquarter">
+            <End Role="Headquarter" EntitySet="Headquarter" />
+            <End Role="Fact" EntitySet="Fact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Item" Association="Self.FK_Fact_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="Fact" EntitySet="Fact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Orders" Association="Self.FK_Fact_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Fact" EntitySet="Fact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Store" Association="Self.FK_Fact_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Fact" EntitySet="Fact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Times" Association="Self.FK_Fact_Times">
+            <End Role="Times" EntitySet="Times" />
+            <End Role="Fact" EntitySet="Fact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MailOrderCustomer_Customer" Association="Self.FK_MailOrderCustomer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="MailOrderCustomer" EntitySet="MailOrderCustomer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItem_Item" Association="Self.FK_OrderItem_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItem_Orders" Association="Self.FK_OrderItem_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Customer1" Association="Self.FK_Orders_Customer1">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Store_Headquarter" Association="Self.FK_Store_Headquarter">
+            <End Role="Headquarter" EntitySet="Headquarter" />
+            <End Role="Store" EntitySet="Store" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreItem_Item" Association="Self.FK_StoreItem_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="StoreItem" EntitySet="StoreItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreItem_Store" Association="Self.FK_StoreItem_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreItem" EntitySet="StoreItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalkInCustomer_Customer" Association="Self.FK_WalkInCustomer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="WalkInCustomer" EntitySet="WalkInCustomer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataWarehouseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+          </Key>
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="city_id" Type="Int32" />
+          <Property Name="first_order_date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Facts" Relationship="Self.FK_Fact_Customer" FromRole="Customer" ToRole="Fact" />
+          <NavigationProperty Name="MailOrderCustomers" Relationship="Self.FK_MailOrderCustomer_Customer" FromRole="Customer" ToRole="MailOrderCustomer" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Customer1" FromRole="Customer" ToRole="Orders" />
+          <NavigationProperty Name="WalkInCustomers" Relationship="Self.FK_WalkInCustomer_Customer" FromRole="Customer" ToRole="WalkInCustomer" />
+        </EntityType>
+        <EntityType Name="Fact">
+          <Key>
+            <PropertyRef Name="time_id" />
+            <PropertyRef Name="city_id" />
+            <PropertyRef Name="store_id" />
+            <PropertyRef Name="customer_id" />
+            <PropertyRef Name="order_id" />
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="time_id" Type="Int32" Nullable="false" />
+          <Property Name="city_id" Type="Int32" Nullable="false" />
+          <Property Name="store_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="order_id" Type="Int32" Nullable="false" />
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="dollar_sold" Type="Double" />
+          <Property Name="avg_sales" Type="Double" />
+          <Property Name="stock_quantity" Type="Int32" />
+          <Property Name="item_sold_quantity" Type="Int32" />
+          <Property Name="num_orders" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Fact_Customer" FromRole="Fact" ToRole="Customer" />
+          <NavigationProperty Name="Headquarter" Relationship="Self.FK_Fact_Headquarter" FromRole="Fact" ToRole="Headquarter" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_Fact_Item" FromRole="Fact" ToRole="Item" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Fact_Orders" FromRole="Fact" ToRole="Orders" />
+          <NavigationProperty Name="Store" Relationship="Self.FK_Fact_Store" FromRole="Fact" ToRole="Store" />
+          <NavigationProperty Name="Time" Relationship="Self.FK_Fact_Times" FromRole="Fact" ToRole="Times" />
+        </EntityType>
+        <EntityType Name="Headquarter">
+          <Key>
+            <PropertyRef Name="city_id" />
+          </Key>
+          <Property Name="city_id" Type="Int32" Nullable="false" />
+          <Property Name="city_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="headquarter_address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="time_start" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Facts" Relationship="Self.FK_Fact_Headquarter" FromRole="Headquarter" ToRole="Fact" />
+          <NavigationProperty Name="Stores" Relationship="Self.FK_Store_Headquarter" FromRole="Headquarter" ToRole="Store" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="size" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="weight" Type="Double" />
+          <Property Name="unit_price" Type="Double" />
+          <Property Name="time_import" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Facts" Relationship="Self.FK_Fact_Item" FromRole="Item" ToRole="Fact" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK_OrderItem_Item" FromRole="Item" ToRole="OrderItem" />
+          <NavigationProperty Name="StoreItems" Relationship="Self.FK_StoreItem_Item" FromRole="Item" ToRole="StoreItem" />
+        </EntityType>
+        <EntityType Name="MailOrderCustomer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+            <PropertyRef Name="time_order" />
+          </Key>
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="post_address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="time_order" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_MailOrderCustomer_Customer" FromRole="MailOrderCustomer" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" />
+          <Property Name="item_id" Type="Int32" />
+          <Property Name="sale_unit_price" Type="Double" />
+          <Property Name="quantity" Type="Int32" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_OrderItem_Item" FromRole="OrderItem" ToRole="Item" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_OrderItem_Orders" FromRole="OrderItem" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="date_order" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Orders_Customer1" FromRole="Orders" ToRole="Customer" />
+          <NavigationProperty Name="Facts" Relationship="Self.FK_Fact_Orders" FromRole="Orders" ToRole="Fact" />
+          <NavigationProperty Name="OrderItem" Relationship="Self.FK_OrderItem_Orders" FromRole="Orders" ToRole="OrderItem" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="store_id" Type="Int32" Nullable="false" />
+          <Property Name="city_id" Type="Int32" />
+          <Property Name="phone" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="time_start" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Facts" Relationship="Self.FK_Fact_Store" FromRole="Store" ToRole="Fact" />
+          <NavigationProperty Name="Headquarter" Relationship="Self.FK_Store_Headquarter" FromRole="Store" ToRole="Headquarter" />
+          <NavigationProperty Name="StoreItem" Relationship="Self.FK_StoreItem_Store" FromRole="Store" ToRole="StoreItem" />
+        </EntityType>
+        <EntityType Name="StoreItem">
+          <Key>
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="store_id" Type="Int32" Nullable="false" />
+          <Property Name="item_id" Type="Int32" />
+          <Property Name="quantity_held" Type="Int32" />
+          <Property Name="time_last_sale" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_StoreItem_Item" FromRole="StoreItem" ToRole="Item" />
+          <NavigationProperty Name="Store" Relationship="Self.FK_StoreItem_Store" FromRole="StoreItem" ToRole="Store" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Time">
+          <Key>
+            <PropertyRef Name="time_id" />
+          </Key>
+          <Property Name="time_id" Type="Int32" Nullable="false" />
+          <Property Name="year" Type="Int32" />
+          <Property Name="quarter" Type="Int32" />
+          <Property Name="month" Type="Int32" />
+          <Property Name="week" Type="Int32" />
+          <Property Name="day_of_the_week" Type="Int32" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Facts" Relationship="Self.FK_Fact_Times" FromRole="Times" ToRole="Fact" />
+        </EntityType>
+        <EntityType Name="WalkInCustomer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+            <PropertyRef Name="time_visit" />
+          </Key>
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="tourism_guide" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="time_visit" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_WalkInCustomer_Customer" FromRole="WalkInCustomer" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK_Fact_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MailOrderCustomer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="MailOrderCustomer" Type="Self.MailOrderCustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="MailOrderCustomer">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Customer1">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalkInCustomer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="WalkInCustomer" Type="Self.WalkInCustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
+            </Principal>
+            <Dependent Role="WalkInCustomer">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Headquarter">
+          <End Role="Headquarter" Type="Self.Headquarter" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Headquarter">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Orders">
+          <End Role="Orders" Type="Self.Order" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fact_Times">
+          <End Role="Times" Type="Self.Time" Multiplicity="1" />
+          <End Role="Fact" Type="Self.Fact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Times">
+              <PropertyRef Name="time_id" />
+            </Principal>
+            <Dependent Role="Fact">
+              <PropertyRef Name="time_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Store_Headquarter">
+          <End Role="Headquarter" Type="Self.Headquarter" Multiplicity="0..1" />
+          <End Role="Store" Type="Self.Store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Headquarter">
+              <PropertyRef Name="city_id" />
+            </Principal>
+            <Dependent Role="Store">
+              <PropertyRef Name="city_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItem_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreItem_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="StoreItem" Type="Self.StoreItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="StoreItem">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItem_Orders">
+          <End Role="Orders" Type="Self.Order" Multiplicity="1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreItem_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="StoreItem" Type="Self.StoreItem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="StoreItem">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DataWarehouseEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Facts" EntityType="Self.Fact" />
+          <EntitySet Name="Headquarters" EntityType="Self.Headquarter" />
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="MailOrderCustomers" EntityType="Self.MailOrderCustomer" />
+          <EntitySet Name="OrderItems" EntityType="Self.OrderItem" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Stores" EntityType="Self.Store" />
+          <EntitySet Name="StoreItems" EntityType="Self.StoreItem" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Times" EntityType="Self.Time" />
+          <EntitySet Name="WalkInCustomers" EntityType="Self.WalkInCustomer" />
+          <AssociationSet Name="FK_Fact_Customer" Association="Self.FK_Fact_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Fact" EntitySet="Facts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MailOrderCustomer_Customer" Association="Self.FK_MailOrderCustomer_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="MailOrderCustomer" EntitySet="MailOrderCustomers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Customer1" Association="Self.FK_Orders_Customer1">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalkInCustomer_Customer" Association="Self.FK_WalkInCustomer_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="WalkInCustomer" EntitySet="WalkInCustomers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Headquarter" Association="Self.FK_Fact_Headquarter">
+            <End Role="Headquarter" EntitySet="Headquarters" />
+            <End Role="Fact" EntitySet="Facts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Item" Association="Self.FK_Fact_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Fact" EntitySet="Facts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Orders" Association="Self.FK_Fact_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Fact" EntitySet="Facts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Store" Association="Self.FK_Fact_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Fact" EntitySet="Facts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fact_Times" Association="Self.FK_Fact_Times">
+            <End Role="Times" EntitySet="Times" />
+            <End Role="Fact" EntitySet="Facts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Store_Headquarter" Association="Self.FK_Store_Headquarter">
+            <End Role="Headquarter" EntitySet="Headquarters" />
+            <End Role="Store" EntitySet="Stores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItem_Item" Association="Self.FK_OrderItem_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreItem_Item" Association="Self.FK_StoreItem_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="StoreItem" EntitySet="StoreItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItem_Orders" Association="Self.FK_OrderItem_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreItem_Store" Association="Self.FK_StoreItem_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="StoreItem" EntitySet="StoreItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DataWarehouseModelStoreContainer" CdmEntityContainer="DataWarehouseEntities1">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="DataWarehouseModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="first_order_date" ColumnName="first_order_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facts">
+            <EntityTypeMapping TypeName="DataWarehouseModel.Fact">
+              <MappingFragment StoreEntitySet="Fact">
+                <ScalarProperty Name="time_id" ColumnName="time_id" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="store_id" ColumnName="store_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="dollar_sold" ColumnName="dollar_sold" />
+                <ScalarProperty Name="avg_sales" ColumnName="avg_sales" />
+                <ScalarProperty Name="stock_quantity" ColumnName="stock_quantity" />
+                <ScalarProperty Name="item_sold_quantity" ColumnName="item_sold_quantity" />
+                <ScalarProperty Name="num_orders" ColumnName="num_orders" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Headquarters">
+            <EntityTypeMapping TypeName="DataWarehouseModel.Headquarter">
+              <MappingFragment StoreEntitySet="Headquarter">
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="city_name" ColumnName="city_name" />
+                <ScalarProperty Name="headquarter_address" ColumnName="headquarter_address" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="time_start" ColumnName="time_start" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="DataWarehouseModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+                <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+                <ScalarProperty Name="time_import" ColumnName="time_import" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MailOrderCustomers">
+            <EntityTypeMapping TypeName="DataWarehouseModel.MailOrderCustomer">
+              <MappingFragment StoreEntitySet="MailOrderCustomer">
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="post_address" ColumnName="post_address" />
+                <ScalarProperty Name="time_order" ColumnName="time_order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderItems">
+            <EntityTypeMapping TypeName="DataWarehouseModel.OrderItem">
+              <MappingFragment StoreEntitySet="OrderItem">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="sale_unit_price" ColumnName="sale_unit_price" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="DataWarehouseModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="date_order" ColumnName="date_order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="DataWarehouseModel.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="store_id" ColumnName="store_id" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="time_start" ColumnName="time_start" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreItems">
+            <EntityTypeMapping TypeName="DataWarehouseModel.StoreItem">
+              <MappingFragment StoreEntitySet="StoreItem">
+                <ScalarProperty Name="store_id" ColumnName="store_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="quantity_held" ColumnName="quantity_held" />
+                <ScalarProperty Name="time_last_sale" ColumnName="time_last_sale" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DataWarehouseModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Times">
+            <EntityTypeMapping TypeName="DataWarehouseModel.Time">
+              <MappingFragment StoreEntitySet="Times">
+                <ScalarProperty Name="time_id" ColumnName="time_id" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="quarter" ColumnName="quarter" />
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="week" ColumnName="week" />
+                <ScalarProperty Name="day_of_the_week" ColumnName="day_of_the_week" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WalkInCustomers">
+            <EntityTypeMapping TypeName="DataWarehouseModel.WalkInCustomer">
+              <MappingFragment StoreEntitySet="WalkInCustomer">
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="tourism_guide" ColumnName="tourism_guide" />
+                <ScalarProperty Name="time_visit" ColumnName="time_visit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

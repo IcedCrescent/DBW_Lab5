@@ -1,0 +1,51 @@
+﻿@model IEnumerable<DBW_Lab5.Models.StoreItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.quantity_held)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.time_last_sale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Store.phone)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.quantity_held)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.time_last_sale)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Store.phone)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.store_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.store_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.store_id })
+        </td>
+    </tr>
+}
+
+</table>
